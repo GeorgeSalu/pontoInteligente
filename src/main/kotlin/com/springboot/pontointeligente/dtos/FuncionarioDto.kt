@@ -3,7 +3,6 @@ package com.springboot.pontointeligente.dtos
 import org.hibernate.validator.constraints.Email
 import org.hibernate.validator.constraints.Length
 import org.hibernate.validator.constraints.NotEmpty
-import kotlin.math.min
 
 data class FuncionarioDto (
 
