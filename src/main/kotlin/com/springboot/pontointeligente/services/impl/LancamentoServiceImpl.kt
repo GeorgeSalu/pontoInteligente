@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class LancamentoServiceImpl(val lancamentoRepository: LancamentoRepository) : LancamentoService {
-    override fun buscarPorFuncioanrioId(funcionarioId: String, pageRequest: PageRequest): Page<Lancamento> =
+    override fun buscarPorFuncionarioId(funcionarioId: String, pageRequest: PageRequest): Page<Lancamento> =
                 lancamentoRepository.findByFuncionarioId(funcionarioId, pageRequest)
 
     override fun buscarPorId(id: String): Lancamento? =
