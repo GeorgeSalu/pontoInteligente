@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest
 
 interface LancamentoService {
 
-    fun buscarPorFuncioanrioId(funcionarioId: String, pageRequest: PageRequest): Page<Lancamento>
+    fun buscarPorFuncionarioId(funcionarioId: String, pageRequest: PageRequest): Page<Lancamento>
 
     fun buscarPorId(id: String): Lancamento?
 

@@ -8,6 +8,9 @@ import com.springboot.pontointeligente.response.Response
 import com.springboot.pontointeligente.services.FuncionarioService
 import com.springboot.pontointeligente.services.LancamentoService
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.validation.ObjectError
@@ -41,6 +44,40 @@ class LancamentoController(val lancamentoService: LancamentoService,
         val lancamento: Lancamento = converterDtoParaLancamento(lancamentoDto, result)
         lancamentoService.persistir(lancamento)
         response.data = converterLancamentoDto(lancamento)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping(value = "/{id}")
+    fun listarPorId(@PathVariable("id") id: String): ResponseEntity<Response<LancamentoDto>> {
+        val response: Response<LancamentoDto> = Response<LancamentoDto>()
+        val lancamento: Lancamento? = lancamentoService.buscarPorId(id)
+
+        if (lancamento == null) {
+            response.erros.add("Lançamento não encontrado para o id $id")
+            return ResponseEntity.badRequest().body(response)
+        }
+
+        response.data = converterLancamentoDto(lancamento)
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping(value = "/funcionario/{funcionarioId}")
+    fun listarPorFuncionarioId(@PathVariable("funcionarioId") funcionarioId: String,
+                               @RequestParam(value = "pag", defaultValue = "0") pag: Int,
+                               @RequestParam(value = "ord", defaultValue = "id") ord: String,
+                               @RequestParam(value = "dir", defaultValue = "DESC") dir: String):
+            ResponseEntity<Response<Page<LancamentoDto>>> {
+
+        val response: Response<Page<LancamentoDto>> = Response<Page<LancamentoDto>>()
+
+        val pageRequest: PageRequest = PageRequest(pag, qtdPorPaginas, Sort.Direction.valueOf(dir), ord)
+        val lancamentos: Page<Lancamento> =
+                lancamentoService.buscarPorFuncionarioId(funcionarioId, pageRequest)
+
+        val lancamentosDto: Page<LancamentoDto> =
+                lancamentos.map { lancamento -> converterLancamentoDto(lancamento) }
+
+        response.data = lancamentosDto
         return ResponseEntity.ok(response)
     }
 
