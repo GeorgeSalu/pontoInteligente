@@ -6,7 +6,7 @@ interface FuncionarioService {
 
     fun persitir(funcionario: Funcionario): Funcionario
 
-    fun buscarPorCnpj(cpf: String): Funcionario?
+    fun buscarPorCpf(cpf: String): Funcionario?
 
     fun buscarPorEmail(email: String): Funcionario?
 
